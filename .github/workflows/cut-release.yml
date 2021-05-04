@@ -57,15 +57,8 @@ jobs:
     needs: release-archive
     strategy:
       matrix:
-        goarch: ['arm64', 'amd64', '386']
-        goos: ['linux', 'windows', 'darwin']
-        exclude:
-          - goos: darwin
-            goarch: '386'
-          - goos: darwin
-            goarch: arm64
-          - goos: windows
-            goarch: arm64
+        goarch: ['amd64']
+        goos: ['linux']
     env:
       GOOS: ${{matrix.goos}}
       GOARCH: ${{matrix.goarch}}
@@ -95,7 +88,6 @@ jobs:
   release:
     name: Release
     runs-on: 'ubuntu-latest'
-    if: github.event_name == 'push'
     needs: [release-archive, release-binaries]
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
@@ -135,15 +127,8 @@ jobs:
     needs: [release-archive, release]
     strategy:
       matrix:
-        goarch: ['arm64', 'amd64', '386']
-        goos: ['linux', 'windows', 'darwin']
-        exclude:
-          - goos: darwin
-            goarch: '386'
-          - goos: darwin
-            goarch: arm64
-          - goos: windows
-            goarch: arm64
+        goarch: ['amd64']
+        goos: ['linux']
     steps:
       - name: Fetch Archive
         uses: actions/download-artifact@v2
