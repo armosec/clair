@@ -152,8 +152,8 @@ jobs:
     steps:
       - name: Setup
         run: |
-          echo "CLAIR_VERSION=$BUILD_ID" >> $GITHUB_ENV
-          echo "TAG=quay.io/armosec/clair:$BUILD_ID" >> $GITHUB_ENV
+          echo "CLAIR_VERSION=$(date +%s)" >> $GITHUB_ENV
+          echo "TAG=quay.io/armosec/clair:$(date +%s)" >> $GITHUB_ENV
           echo "QUAY_USER=armosec+githubwokflow1" >> $GITHUB_ENV
           echo "::add-mask::${{ secrets.QUAY_GITHUB_ROBOT1 }}"
       - name: Fetch Artifacts
