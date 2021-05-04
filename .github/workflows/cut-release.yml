@@ -152,11 +152,10 @@ jobs:
     steps:
       - name: Setup
         run: |
-          tag=`basename ${{ github.ref }}`
-          echo "CLAIR_VERSION=${tag}" >> $GITHUB_ENV
-          echo "TAG=quay.io/armosec/clair:${tag#v}" >> $GITHUB_ENV
-          echo "QUAY_USER=armosec+clair_github" >> $GITHUB_ENV
-          echo "::add-mask::${{ secrets.QUAY_TOKEN }}"
+          echo "CLAIR_VERSION=$BUILD_ID" >> $GITHUB_ENV
+          echo "TAG=quay.io/armosec/clair:$BUILD_ID" >> $GITHUB_ENV
+          echo "QUAY_USER=armosec+githubwokflow1" >> $GITHUB_ENV
+          echo "::add-mask::${{ secrets.QUAY_GITHUB_ROBOT1 }}"
       - name: Fetch Artifacts
         uses: actions/download-artifact@v2
         id: download
@@ -170,6 +169,6 @@ jobs:
           docker build --build-arg CLAIR_VERSION --tag "${TAG}" "$d"
       - name: Publish Release Container
         run: |
-          docker login -u "${QUAY_USER}" -p '${{ secrets.QUAY_TOKEN }}' quay.io
+          docker login -u "${QUAY_USER}" -p '${{ secrets.QUAY_GITHUB_ROBOT1 }}' quay.io
           docker push "${TAG}"
 
