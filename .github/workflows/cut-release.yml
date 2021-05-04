@@ -107,7 +107,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}-${{ env.VERSION }}
+          tag_name: ${{ github.ref }}-${{ github.run_number }}
           release_name: ${{ env.VERSION }} Release
           body_path: ${{steps.download.outputs.download-path}}/changelog
           prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') || contains(env.VERSION, 'rc') }}
@@ -152,8 +152,8 @@ jobs:
     steps:
       - name: Setup
         run: |
-          echo "CLAIR_VERSION=$(date +%s)" >> $GITHUB_ENV
-          echo "TAG=quay.io/armosec/clair:$(date +%s)" >> $GITHUB_ENV
+          echo "CLAIR_VERSION=${{ github.ref }}-${{ github.run_number }}" >> $GITHUB_ENV
+          echo "TAG=quay.io/armosec/clair:${{ github.run_number }}" >> $GITHUB_ENV
           echo "QUAY_USER=armosec+githubwokflow1" >> $GITHUB_ENV
           echo "::add-mask::${{ secrets.QUAY_GITHUB_ROBOT1 }}"
       - name: Fetch Artifacts
