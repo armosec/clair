@@ -94,7 +94,7 @@ jobs:
     steps:
       - name: Setup
         run: |
-          tag=`basename ${{ github.ref }}-${{ github.run_number }}`
+          tag=`basename ${{ github.ref }}`-${{ github.run_number }}
           echo "VERSION=${tag}" 
           echo "VERSION=${tag}" >> $GITHUB_ENV
       - name: Fetch Artifacts
@@ -108,7 +108,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}-${{ github.run_number }}
+          tag_name: main-release-${{ github.run_number }}
           release_name: ${{ env.VERSION }} Release
           body_path: ${{steps.download.outputs.download-path}}/changelog
           prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') || contains(env.VERSION, 'rc') }}
