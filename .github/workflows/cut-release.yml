@@ -94,7 +94,8 @@ jobs:
     steps:
       - name: Setup
         run: |
-          tag=`basename ${{ github.ref }}`
+          tag=`basename ${{ github.ref }}-${{ github.run_number }}`
+          echo "VERSION=${tag}" 
           echo "VERSION=${tag}" >> $GITHUB_ENV
       - name: Fetch Artifacts
         uses: actions/download-artifact@v2
