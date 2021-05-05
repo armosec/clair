@@ -2,7 +2,7 @@ module github.com/quay/clair/v4
 
 go 1.13
 
-replace github.com/quay/claircore => github.com/armosec/claircore v0.4.2
+replace github.com/quay/claircore => github.com/armosec/claircore v0.4.3
 
 require (
 	github.com/docker/docker v1.13.1 // indirect
