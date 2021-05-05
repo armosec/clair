@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/quay/claircore/libindex"
@@ -32,6 +33,7 @@ const (
 var (
 	intraserviceClaim = jwt.Claims{Issuer: httptransport.IntraserviceIssuer}
 	notifierClaim     = jwt.Claims{Issuer: NotifierIssuer}
+	httpClient        = &http.Client{Timeout: 30 * time.Second}
 )
 
 // Srv is a bundle of configured Services.
@@ -133,7 +135,7 @@ func localIndexer(ctx context.Context, cfg *config.Config) (indexer.Service, err
 			opts.ScannerConfig.Repo[name] = node.Decode
 		}
 	}
-	s, err := libindex.New(ctx, &opts)
+	s, err := libindex.New(ctx, &opts, httpClient)
 	if err != nil {
 		return nil, mkErr(err)
 	}

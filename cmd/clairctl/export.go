@@ -2,11 +2,9 @@ package main
 
 import (
 	"errors"
-	"io"
+	"fmt"
 	"os"
-	"regexp"
 
-	"github.com/quay/claircore/libvuln"
 	"github.com/quay/claircore/libvuln/driver"
 	"github.com/quay/claircore/updater"
 	_ "github.com/quay/claircore/updater/defaults"
@@ -34,20 +32,20 @@ var ExportCmd = &cli.Command{
 
 func exportAction(c *cli.Context) error {
 	ctx := c.Context
-	var out io.Writer
+	// var out io.Writer
 
 	// Setup the output file.
 	args := c.Args()
 	switch args.Len() {
 	case 0:
-		out = os.Stdout
+		// out = os.Stdout
 	case 1:
 		f, err := os.Create(args.First())
 		if err != nil {
 			return err
 		}
 		defer f.Close()
-		out = f
+		// out = f
 	default:
 		return errors.New("too many arguments (wanted at most one)")
 	}
@@ -57,10 +55,10 @@ func exportAction(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	filter, err := regexp.Compile(cfg.Updaters.Filter)
-	if err != nil {
-		return err
-	}
+	// filter, err := regexp.Compile(cfg.Updaters.Filter)
+	// if err != nil {
+	// 	return err
+	// }
 	cfgs := make(map[string]driver.ConfigUnmarshaler, len(cfg.Updaters.Config))
 	for name, node := range cfg.Updaters.Config {
 		cfgs[name] = node.Decode
@@ -71,10 +69,10 @@ func exportAction(c *cli.Context) error {
 		return err
 	}
 
-	u, err := libvuln.NewOfflineUpdater(cfgs, filter.MatchString, out)
-	if err != nil {
-		return err
-	}
+	// u, err := libvuln.NewOfflineUpdater(cfgs, filter.MatchString, out)
+	// if err != nil {
+	// 	return err
+	// }
 
 	defs := updater.Registered()
 	cfg.Updaters.FilterSets(defs)
@@ -86,14 +84,14 @@ func exportAction(c *cli.Context) error {
 		ufs = append(ufs, u)
 	}
 
-	if err := u.RunUpdaters(ctx, ufs...); err != nil {
-		// Don't exit non-zero if we run into errors, unless the strict flag was
-		// provided.
-		code := 0
-		if c.Bool("strict") {
-			code = 1
-		}
-		return cli.Exit(err.Error(), code)
-	}
-	return nil
+	// if err := u.RunUpdaters(ctx, ufs...); err != nil {
+	// 	// Don't exit non-zero if we run into errors, unless the strict flag was
+	// 	// provided.
+	// 	code := 0
+	// 	if c.Bool("strict") {
+	// 		code = 1
+	// 	}
+	// 	return cli.Exit(err.Error(), code)
+	// }
+	return fmt.Errorf("not implemented")
 }
